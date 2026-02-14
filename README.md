@@ -59,6 +59,12 @@ The application will be available at `http://127.0.0.1:8000`.
 3. Click **Evaluate** to see the scores and feedback.
 4. Click **Download PDF Report** to save the results locally.
 
+
+
+https://github.com/user-attachments/assets/e88dffe6-ca85-4bd7-bc22-fc7aba87dcdf
+
+
+
 ## Project Structure
 
 - `main.py`: Core logic and API endpoints.
