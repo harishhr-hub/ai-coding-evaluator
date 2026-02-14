@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Coding Assignment Evaluator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body id="body" class="bg-gradient-to-br from-indigo-100 via-white to-blue-100 min-h-screen transition-colors duration-300">
+
+<div class="max-w-5xl mx-auto py-10 px-6">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">🤖 AI Coding Evaluator</h1>
+
+        <!-- Dark mode toggle -->
+        <button onclick="toggleDark()" class="bg-gray-800 text-white px-3 py-1 rounded">
+            🌙 Dark Mode
+        </button>
+    </div>
+
+    <!-- Input Card -->
+    <div class="bg-white shadow-xl rounded-2xl p-8 mb-8">
+
+        <form method="post" action="/evaluate" enctype="multipart/form-data">
+
+            <label class="font-semibold text-gray-700">GitHub File URL</label>
+            <input name="github_url" class="w-full border rounded-lg p-3 mt-1 mb-4"
+                   placeholder="Paste GitHub file link">
+
+            <label class="font-semibold text-gray-700">Upload Code File</label>
+            <input type="file" name="file" class="w-full mb-4">
+
+            <!-- Multi-file comparison -->
+            <label class="font-semibold text-gray-700">Optional: Compare With Another File</label>
+            <input type="file" name="file2" class="w-full mb-6">
+
+            <button
+                class="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white p-3 rounded-lg font-semibold hover:opacity-90">
+                Evaluate Code 🚀
+            </button>
+        </form>
+
+        <!-- Sample code button -->
+        <button onclick="loadSample()"
+                class="mt-4 text-indigo-600 underline text-sm">
+            Try sample code
+        </button>
+
+    </div>
+
+    <!-- Results -->
+    {% if result %}
+    <div class="bg-white shadow-xl rounded-2xl p-8 mb-8">
+
+        <h2 class="text-xl font-semibold mb-4">📊 Evaluation Report</h2>
+
+        <div class="bg-green-50 border border-green-200 p-4 rounded-lg mb-6">
+            <pre class="whitespace-pre-wrap text-sm">{{ result }}</pre>
+        </div>
+
+        <!-- Animated Score Bars -->
+        {% if scores %}
+        <div class="mb-6">
+            <h3 class="font-semibold mb-3">Score Breakdown</h3>
+
+            {% for name, value in scores.items() %}
+            <div class="mb-3">
+                <div class="flex justify-between text-sm">
+                    <span class="capitalize">{{ name }}</span>
+                    <span>{{ value }}</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                    <div class="bg-indigo-600 h-3 rounded-full bar"
+                         data-width="{{ value }}"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Code Preview -->
+        {% if code %}
+        <div class="mb-6">
+            <h3 class="font-semibold mb-2">📄 Submitted Code</h3>
+            <pre class="bg-gray-900 text-green-300 p-4 rounded-lg overflow-x-auto text-sm">
+{{ code }}
+            </pre>
+        </div>
+        {% endif %}
+
+        <!-- PDF download button -->
+        <a href="/report"
+           class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+            Download PDF Report
+        </a>
+
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- Scripts -->
+<script>
+/* Dark mode toggle */
+function toggleDark(){
+    document.getElementById("body").classList.toggle("bg-gray-900");
+    document.getElementById("body").classList.toggle("text-white");
+}
+
+/* Animate bars after page load */
+window.onload = function(){
+    document.querySelectorAll(".bar").forEach(bar=>{
+        let w = bar.dataset.width;
+        bar.style.width = "0%";
+        setTimeout(()=>{ bar.style.width = w + "%"; }, 200);
+    });
+}
+
+/* Sample code loader */
+function loadSample(){
+    const sample = `def double(n):
+    return n*2
+
+print(double(5))`;
+    alert("Sample code loaded — paste into editor or upload manually.");
+}
+</script>
+
+</body>
+</html>
